@@ -1,15 +1,20 @@
 import { IconBadge } from "@/components/IconBadge";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
-import { CircleDollarSign, File, LayoutDashboard, ListChecks } from "lucide-react";
+import {
+  CircleDollarSign,
+  File,
+  LayoutDashboard,
+  ListChecks,
+} from "lucide-react";
 import { redirect } from "next/navigation";
 import TitleForm from "./_components/TitleForm";
-import DescriptionForm from "./_components/DescriptionForm";
+import DescriptionForm from "./_components/description-form";
 import ImageForm from "./_components/ImageForm";
 import CategoryForm from "./_components/category-form";
 import { PriceForm } from "./_components/PriceForm";
 import { AttachmentForm } from "./_components/AttachmentForm";
-import { ChaptersForm } from "./_components/ChaptersForm";
+import { ChaptersForm } from "./_components/chapters-form";
 import Banner from "@/components/banner";
 import { CourseActions } from "./_components/course-actions";
 
@@ -23,20 +28,20 @@ const CourseId = async ({ params }: { params: { courseId: string } }) => {
   const course = await db.course.findUnique({
     where: {
       id: params.courseId,
-      userId
+      userId,
     },
     include: {
-        chapters:{
-          orderBy:{
-            position: "asc"
-          }
+      chapters: {
+        orderBy: {
+          position: "asc",
         },
-        attachments:{
-            orderBy:{
-                createdAt: "desc"
-            }
-        }
-    }
+      },
+      attachments: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
+    },
   });
 
   const categories = await db.category.findMany({
@@ -55,7 +60,7 @@ const CourseId = async ({ params }: { params: { courseId: string } }) => {
     course.imgUrl,
     course.price,
     course.categoryId,
-    course.chapters.some(chapter => chapter.isPublished)
+    course.chapters.some((chapter) => chapter.isPublished),
   ];
 
   const totalFields = requiredFields.length;
@@ -63,19 +68,19 @@ const CourseId = async ({ params }: { params: { courseId: string } }) => {
 
   const completionText = `(${completedFields} / ${totalFields})`;
 
-  const isComplete = requiredFields.every(Boolean)
+  const isComplete = requiredFields.every(Boolean);
 
   return (
     <>
-     {!course.isPublished && (
-        <Banner 
+      {!course.isPublished && (
+        <Banner
           variant="warning"
           label="This course is unpublished. It will not be visible in the students"
         />
       )}
-      
+
       {course.isPublished && (
-        <Banner 
+        <Banner
           variant="success"
           label="This course is published. It will now be visible in the students"
         />
@@ -89,11 +94,11 @@ const CourseId = async ({ params }: { params: { courseId: string } }) => {
               Complete all fields {completionText}
             </span>
           </div>
-          <CourseActions 
-                disabled={!isComplete}
-                courseId={params.courseId}
-                isPublished={course.isPublished}
-              />
+          <CourseActions
+            disabled={!isComplete}
+            courseId={params.courseId}
+            isPublished={course.isPublished}
+          />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
           <div>
@@ -102,16 +107,16 @@ const CourseId = async ({ params }: { params: { courseId: string } }) => {
               <h2 className="text-xl font-semibold">Customize your course</h2>
             </div>
             <TitleForm 
-              initialData={course} 
-              courseId={course.id} 
+             initialData={course} 
+             courseId={course.id} 
             />
             <DescriptionForm 
-              initialData={course} 
-              courseId={course.id} 
+             initialData={course} 
+             courseId={course.id} 
             />
             <ImageForm 
-              initialData={course}
-              courseId={course.id} 
+             initialData={course} 
+             courseId={course.id} 
             />
             <CategoryForm
               initialData={course}
@@ -126,36 +131,34 @@ const CourseId = async ({ params }: { params: { courseId: string } }) => {
             <div>
               <div className="flex items-center gap-x-2">
                 <IconBadge icon={ListChecks} />
-                <h2 className="text-xl font-semibold">
-                  Course Chapters
-                </h2>
+                <h2 className="text-xl font-semibold">Course Chapters</h2>
               </div>
-                <ChaptersForm
-                initialData={course} 
-                courseId={course.id} 
+              <ChaptersForm 
+               initialData={course} 
+               courseId={course.id} 
               />
             </div>
-            <div >
+            <div>
               <div className="flex items-center gap-x-2">
-                  <IconBadge icon={CircleDollarSign}/>
-                  <p className="text-xl font-semibold">Set your price of course</p>
+                <IconBadge icon={CircleDollarSign} />
+                <p className="text-xl font-semibold">
+                  Set your price of course
+                </p>
               </div>
               <PriceForm 
-              initialData={course} 
-              courseId={course.id} 
-            />
-            </div>          
-            <div >
+               initialData={course} 
+               courseId={course.id} 
+              />
+            </div>
+            <div>
               <div className="flex items-center gap-x-2">
-                  <IconBadge icon={File}/>
-                  <p className="text-xl font-semibold">
-                      Resources & Attachments
-                  </p>
+                <IconBadge icon={File} />
+                <p className="text-xl font-semibold">Resources & Attachments</p>
               </div>
-              <AttachmentForm
-              initialData={course} 
-              courseId={course.id} 
-            />
+              <AttachmentForm 
+               initialData={course} 
+               courseId={course.id} 
+              />
             </div>
           </div>
         </div>

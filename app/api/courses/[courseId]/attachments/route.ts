@@ -35,7 +35,7 @@ export async function POST(
 
         return NextResponse.json(attachment)
     } catch (error) {
-        console.log("Course Error", error);
+        console.log("Course Error POST", error);
         return new NextResponse("Internal Server Error", {status: 500})
     }
 }

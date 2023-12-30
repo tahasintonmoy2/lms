@@ -1,21 +1,20 @@
 import { getChapter } from "@/actions/get-chapter";
 import Banner from "@/components/banner";
-import { auth } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
-import React from "react";
-import { VideoPlayer } from "./_components/video-player";
-import { CourseEnrollButton } from "./_components/course-enroll-button";
-import { Separator } from "@/components/ui/separator";
 import { Preview } from "@/components/preview";
+import { Separator } from "@/components/ui/separator";
+import { auth } from "@clerk/nextjs";
 import { File } from "lucide-react";
+import { redirect } from "next/navigation";
+import { CourseEnrollButton } from "./_components/course-enroll-button";
 import { CourseProgressButton } from "./_components/course-progress-button";
+import { VideoPlayer } from "./_components/video-player";
 
 const ChapterId = async ({
   params,
 }: {
   params: { courseId: string; chapterId: string };
 }) => {
-  const { userId, user } = auth();
+  const { userId } = auth();
 
   if (!userId) {
     return redirect("/");
@@ -45,7 +44,10 @@ const ChapterId = async ({
   return (
     <div>
       {userProgress?.isCompleted && (
-        <Banner variant="success" label="You have alredy compeleted this chapter" />
+        <Banner
+          variant="success"
+          label="You have alredy compeleted this chapter"
+        />
       )}
       {isLocked && (
         <Banner
@@ -67,21 +69,21 @@ const ChapterId = async ({
         </div>
         <div>
           <div className="p-4 flex flex-col md:flex-row items-center justify-between">
-            <h2 className="text-2xl font-semibold mb-2">
-              {chapter.title}
-            </h2>
+            <h2 className="text-2xl font-semibold mb-2">{chapter.title}</h2>
             {purchase ? (
-              <CourseProgressButton 
-               chapterId={params.chapterId}
-               courseId={params.courseId}
-               nextChapterId={nextChapter?.id}
-               isCompleted={!!userProgress?.isCompleted}
+              <CourseProgressButton
+                chapterId={params.chapterId}
+                courseId={params.courseId}
+                nextChapterId={nextChapter?.id}
+                isCompleted={!!userProgress?.isCompleted}
               />
             ) : (
-              <CourseEnrollButton
-                courseId={params.courseId}
-                price={course.price!}
-              />
+              <>
+                <CourseEnrollButton
+                  courseId={params.courseId}
+                  price={course.price!}
+                />
+              </>
             )}
           </div>
           <Separator />
@@ -100,9 +102,7 @@ const ChapterId = async ({
                     className="flex items-center p-3 w-full bg-sky-100 border-sky-200 border text-blue-600 rounded-md"
                   >
                     <File className="h-6 w-6 mr-2 flex-shrink-0" />
-                    <p className="line-clamp-1">
-                        {attachment.name}
-                    </p>
+                    <p className="line-clamp-1">{attachment.name}</p>
                   </a>
                 ))}
               </div>

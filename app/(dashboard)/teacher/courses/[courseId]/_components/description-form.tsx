@@ -1,26 +1,25 @@
 "use client"
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
-import {useState} from 'react';
 import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useState } from 'react';
+import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
-  FormMessage,
+  FormMessage
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
-import { PencilIcon } from "lucide-react";
-import {MdClose} from "react-icons/md"
 import { cn } from "@/lib/utils";
 import { Course } from "@prisma/client";
+import { PencilIcon } from "lucide-react";
+import { MdClose } from "react-icons/md";
+import { toast } from "sonner";
 
 interface DescriptionFormPops {
   initialData: Course,
@@ -56,8 +55,10 @@ const DescriptionForm = ({
       toast.success("Course has updated!");
       toggleEdit();
       router.refresh();
-    } catch {
+    } catch (error) {
       toast.error("Something went wrong!");
+      console.log(error);
+      
     }
   }
 
