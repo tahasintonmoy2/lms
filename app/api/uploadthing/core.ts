@@ -20,7 +20,7 @@ export const ourFileRouter = {
         .onUploadComplete(()=> {}),
     videoChapter: f({video: {maxFileCount:1, maxFileSize:"1024GB"}}) 
         .middleware(()=> handleAuth())
-        .onUploadComplete(()=> {}),   
+        .onUploadComplete(()=> {}),
 } satisfies FileRouter;
  
 export type OurFileRouter = typeof ourFileRouter;

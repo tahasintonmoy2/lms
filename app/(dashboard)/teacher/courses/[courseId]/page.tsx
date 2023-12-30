@@ -110,7 +110,7 @@ const CourseId = async ({ params }: { params: { courseId: string } }) => {
               courseId={course.id} 
             />
             <ImageForm 
-              initialData={course} 
+              initialData={course}
               courseId={course.id} 
             />
             <CategoryForm
