@@ -7,7 +7,7 @@ import { useSearchParams, useRouter, usePathname } from "next/navigation";
 
 import { Input } from "@/components/ui/input";
 import { useDebounce } from "@/hooks/use-debounce";
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 
 export const SearchInput = () => {
   const [value, setValue] = useState("");
@@ -40,12 +40,12 @@ export const SearchInput = () => {
       {value.length === 0 ? (
         <Search className="h-4 w-4 absolute hidden top-3 left-3 text-slate-600" />
       ) : (
-        <Button 
-          variant="ghost" 
-          size="sm" 
+        <Button
+          variant="ghost"
+          size="sm"
           onClick={() => setValue("")}
           className="absolute top-1 md:ml-64 ml-[18.6rem] flex items-center text-slate-600"
-          >
+        >
           <XIcon className="h-5 w-5 gap-y-3" />
         </Button>
       )}

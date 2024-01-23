@@ -3,6 +3,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import MuxPlayer from "@mux/mux-player-react";
+import "@mux/mux-player-react/themes/classic";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Loader, Lock } from "lucide-react";
@@ -79,6 +80,8 @@ export const VideoPlayer = ({
       {!isLocked && (
         <MuxPlayer
           title={title}
+          accentColor="#2563eb"
+          theme="classic"
           className={cn("aspect-video", !isReady && "hidden")}
           onCanPlay={() => setIsReady(true)}
           onEnded={onEnd}

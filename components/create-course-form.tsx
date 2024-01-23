@@ -1,12 +1,12 @@
 "use client";
-import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
 import axios from "axios";
+import { useRouter } from "next/navigation";
+import React from "react";
+import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -17,17 +17,24 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { getError } from "@/lib/get-error-message";
 import { toast } from "sonner";
 
 const formSchema = z.object({
-  title: z.string().min(1, {
-    message: "Title is required",
+  title: z.string().min(5, {
+    message: "Name is required",
   }),
 });
 
-const CreateNewCourse = () => {
+type CreateCourseType = {
+  onClick: React.ReactNode;
+};
+
+export const CreateNewCourseForm = ({ 
+  onClick 
+}: CreateCourseType) => {
   const router = useRouter();
+  
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -41,53 +48,48 @@ const CreateNewCourse = () => {
     try {
       const response = await axios.post("/api/courses", values);
       router.push(`/teacher/courses/${response.data.id}`);
-      toast.success("Course has created!");      
+      toast.success("Course created");
     } catch (error) {
-      toast.error("Something went wrong!");
+      toast.error(getError(error));
     }
   };
 
   return (
-    <div className="max-w-5xl mx-auto flex md:items-center md:justify-center h-full p-6">
+    <div>
       <div>
-        <h1 className="text-3xl font-semibold">Name your course</h1>
-        <p className="text-sm text-slate-600">
-          What would you like to name your course? <br />
-          Don&apos;t worry, you can change this later.
-        </p>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-8 mt-8"
+            className=""
           >
             <FormField
               control={form.control}
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Course Title</FormLabel>
-                  <FormMessage/>
+                  <FormLabel>Course Name</FormLabel>
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      className="focus-visible:ring-transparent focus:outline-none"
+                      className="focus-visible:ring-transparent focus:outline-none w-96"
                       placeholder="c.g 'Advanced iOS Development'"
                       {...field}
                     />
                   </FormControl>
+                  <FormMessage className="font-semibold" />
                   <FormDescription>
                     What will you teach in this course?
                   </FormDescription>
                 </FormItem>
               )}
             />
-            <div className="flex items-center gap-x-2">
-              <Link href="/teacher/courses">
-                <Button type="button" variant="ghost">
-                  Cancel
-                </Button>
-              </Link>
-              <Button type="submit" disabled={!isValid || isSubmitting}>
+            <div className="flex items-center">
+              <div className="lg:ml-[13rem] mt-3 ml-36">{onClick}</div>
+              <Button
+                className="ml-3 mt-3"
+                type="submit"
+                disabled={!isValid || isSubmitting}
+              >
                 Contiune
               </Button>
             </div>
@@ -97,5 +99,3 @@ const CreateNewCourse = () => {
     </div>
   );
 };
-
-export default CreateNewCourse;

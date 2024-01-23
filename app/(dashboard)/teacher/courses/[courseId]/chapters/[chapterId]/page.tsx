@@ -1,15 +1,15 @@
-import { IconBadge } from "@/components/IconBadge";
+import Banner from "@/components/banner";
+import { IconBadge } from "@/components/icon-badge";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
 import { ArrowLeft, Eye, LayoutDashboard, Video } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ChapterForm } from "./_components/Chapter-title-Form";
-import ChapterDescriptionForm from "./_components/chapter-description-form";
 import ChapterAccessForm from "./_components/chapter-access-form";
-import { ChapterVideoForm } from "./_components/chapter-video-form";
-import Banner from "@/components/banner";
 import ChapterAction from "./_components/chapter-actions";
+import ChapterDescriptionForm from "./_components/chapter-description-form";
+import { ChapterTitleForm } from "./_components/chapter-title-form";
+import { ChapterVideoForm } from "./_components/chapter-video-form";
 
 const ChapterId = async ({
   params,
@@ -55,6 +55,7 @@ const ChapterId = async ({
         <Banner 
           variant="warning"
           label="This chapter is unpublished. It will not be visible in the course"
+          className="text-black"
         />
       )}
       
@@ -62,6 +63,7 @@ const ChapterId = async ({
         <Banner 
           variant="success"
           label="This chapter is published. It will now be visible in the course"
+          className="text-secondary"
         />
       )}
       
@@ -102,7 +104,7 @@ const ChapterId = async ({
                   Customize your chapter
                 </p>
               </div>
-              <ChapterForm 
+              <ChapterTitleForm
                 initialData={chapter}
                 courseId={params.courseId}
                 chapterId={params.chapterId}

@@ -2,6 +2,7 @@
 import { ConfirmModal } from '@/components/models/confirm-modal'
 import { Button } from '@/components/ui/button'
 import { useConfettiStore } from '@/hooks/use-confetti-store'
+import { getError } from '@/lib/get-error-message'
 import axios from 'axios'
 import { Trash } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -20,8 +21,8 @@ export const CourseActions = ({
   courseId,
 }: CourseActionsProps) => {
   const router = useRouter()
-  const confetti = useConfettiStore()
-  const [isLoadig, setIsLoading] = useState(false)
+  const confetti = useConfettiStore();
+  const [isLoadig, setIsLoading] = useState(false);
 
   const onPublish =async () => {
     try {
@@ -29,16 +30,16 @@ export const CourseActions = ({
 
       if (isPublished) {
         await axios.patch(`/api/courses/${courseId}/unpublish`);
-        toast.success("Course has unpublished!");
+        toast.success("Course unpublished");
       } else {
         await axios.patch(`/api/courses/${courseId}/publish`);
-        toast.success("Course has published!");
+        toast.success("Course published");
         confetti.onOpen();
       }
 
       router.refresh()
     } catch (error) {
-      toast.error("Something went wrong!");
+      toast.error(getError(error));
     } finally {
       setIsLoading(false)
     }
@@ -52,7 +53,7 @@ export const CourseActions = ({
       router.push(`/teacher/courses`)
       router.refresh()
     } catch (error) {
-      toast.error("Something went wrong!");
+      toast.error(getError(error));
     } finally {
       setIsLoading(false)
     }
@@ -74,7 +75,7 @@ export const CourseActions = ({
           variant='destructive'
           size='sm'
         >
-            <Trash className='h-4 w-4'/>
+          <Trash className='h-4 w-4'/>
         </Button>
        </ConfirmModal>
     </div>

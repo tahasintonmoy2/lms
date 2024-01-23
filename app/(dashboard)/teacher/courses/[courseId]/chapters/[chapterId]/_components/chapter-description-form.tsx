@@ -1,11 +1,15 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import axios from "axios";
+import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import { ActionHint } from "@/components/action-hint";
+import { Editor } from "@/components/editor";
+import { Preview } from "@/components/preview";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -13,20 +17,12 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
-import { PencilIcon } from "lucide-react";
-import { MdClose } from "react-icons/md";
+import { getError } from "@/lib/get-error-message";
 import { cn } from "@/lib/utils";
 import { Chapter } from "@prisma/client";
-import { Editor } from "@/components/editor";
-import { Preview } from "@/components/preview";
+import { PencilIcon } from "lucide-react";
+import { MdClose } from "react-icons/md";
+import { toast } from "sonner";
 
 interface ChapterDescriptionFormPops {
   initialData: Chapter;
@@ -64,11 +60,11 @@ const ChapterDescriptionForm = ({
         `/api/courses/${courseId}/chapters/${chapterId}`,
         values
       );
-      toast.success("Chapter has updated!");
+      toast.success("Chapter updated!");
       toggleEdit();
       router.refresh();
-    } catch {
-      toast.error("Something went wrong!");
+    } catch (error) {
+      toast.error(getError(error));
     }
   };
 
@@ -84,16 +80,9 @@ const ChapterDescriptionForm = ({
             </>
           ) : (
             <>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <PencilIcon className="h-4 w-4 mr-2" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Edit Chapter Description</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <ActionHint description="Edit chapter description">
+               <PencilIcon className="h-4 w-4 mr-2" />
+              </ActionHint>
             </>
           )}
         </Button>

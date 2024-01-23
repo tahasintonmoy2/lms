@@ -1,11 +1,10 @@
 "use client";
+import { CourseProgress } from "@/components/course-progress";
+import { formatPrice } from "@/lib/format";
+import { BookOpen } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
-import { IconBadge } from "./IconBadge";
-import { BookOpen } from "lucide-react";
-import { formatPrice } from "@/lib/format";
-import { CourseProgress } from "@/components/course-progress";
+import { IconBadge } from "./icon-badge";
 
 interface CourseCardProps {
   id: string;

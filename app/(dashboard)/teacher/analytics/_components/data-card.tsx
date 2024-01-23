@@ -1,15 +1,13 @@
-import React from "react";
+import { IconBadge } from "@/components/icon-badge";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle
 } from "@/components/ui/card";
 import { formatPrice } from "@/lib/format";
 import { LucideIcon } from "lucide-react";
-import { IconBadge } from "@/components/IconBadge";
 
 interface DataCardProps {
   value: number;

@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/lib/format";
+import { getError } from "@/lib/get-error-message";
 import axios from "axios";
 import React, { useState } from "react";
 import { toast } from "sonner";
@@ -24,7 +25,7 @@ export const CourseEnrollButton = ({
 
       window.location.assign(response.data.url);
     } catch (error) {
-      toast.error("Something went wrong!");
+      toast.error(getError(error));
     } finally {
       setIsLoading(false);
     }

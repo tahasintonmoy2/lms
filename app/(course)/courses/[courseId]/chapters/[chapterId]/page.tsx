@@ -8,6 +8,9 @@ import { redirect } from "next/navigation";
 import { CourseEnrollButton } from "./_components/course-enroll-button";
 import { CourseProgressButton } from "./_components/course-progress-button";
 import { VideoPlayer } from "./_components/video-player";
+import { Button } from "@/components/ui/button";
+import { PiShareFat } from "react-icons/pi";
+import { ShareDialog } from "./_components/share-dialog";
 
 const ChapterId = async ({
   params,
@@ -47,12 +50,14 @@ const ChapterId = async ({
         <Banner
           variant="success"
           label="You have alredy compeleted this chapter"
+          className="text-secondary"
         />
       )}
       {isLocked && (
         <Banner
           variant="warning"
           label="You need to purchase this course to watch this chapter"
+          className="text-black"
         />
       )}
       <div className="flex flex-col max-w-4xl mx-auto pb-20">
@@ -79,15 +84,23 @@ const ChapterId = async ({
               />
             ) : (
               <>
+              <div className="flex items-center">
                 <CourseEnrollButton
                   courseId={params.courseId}
                   price={course.price!}
                 />
+               <ShareDialog>
+                  <Button className="bg-[#f2f2f2] hover:bg-[#e5e5e5] ml-3 text-black shadow-sm" size="sm">
+                  <PiShareFat className="h-5 w-5 mr-2" />
+                    Share
+                  </Button>
+                </ShareDialog> 
+              </div>
               </>
             )}
           </div>
           <Separator />
-          <div>
+          <div className="bg-[#f2f2f2] rounded-xl mt-5">
             <Preview value={chapter.description!} />
           </div>
           {!!attachments.length && (

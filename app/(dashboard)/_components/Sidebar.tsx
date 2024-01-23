@@ -1,6 +1,6 @@
 import React from "react";
-import Icon from "./Icon";
-import SidebarRoutes from "./SidebarRoutes";
+import Icon from "./icon";
+import SidebarRoutes from "./sidebar-routes";
 
 const Sidebar = () => {
   return (

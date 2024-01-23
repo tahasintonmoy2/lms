@@ -12,6 +12,8 @@ import { MdClose } from "react-icons/md";
 import { Chapter, MuxData } from "@prisma/client";
 import { FileUpload } from "@/components/flie-upload";
 import MuxPlayer from "@mux/mux-player-react";
+import "@mux/mux-player-react/themes/classic";
+import { getError } from "@/lib/get-error-message";
 
 interface ChapterVideoFormPops {
   initialData: Chapter & { muxData?: MuxData | null };
@@ -40,11 +42,11 @@ export const ChapterVideoForm = ({
         `/api/courses/${courseId}/chapters/${chapterId}`,
         values
       );
-      toast.success("Chapter Video uploaded!");
+      toast.success("Chapter video uploaded");
       toggleEdit();
       router.refresh();
-    } catch {
-      toast.error("Something went wrong!");
+    } catch (error) {
+      toast.error(getError(error));
     }
   };
 
@@ -90,6 +92,9 @@ export const ChapterVideoForm = ({
           <div className="relative aspect-video mt-2 overflow-hidden">
             <MuxPlayer
               playbackId={initialData?.muxData?.playbackId || ""}
+              accentColor="#2563eb"
+              theme="classic"
+              title={initialData.title}
               className="aspect-video"
             />
           </div>

@@ -1,13 +1,13 @@
 "use client"
-import { Layers3, Compass, ListVideo, PieChart } from 'lucide-react'
+import { Layers3, Compass, ListVideo, PieChart, LayoutDashboard } from 'lucide-react'
 import {CgPlayList} from 'react-icons/cg'
 import {FaLayerGroup} from 'react-icons/fa'
 import {usePathname} from 'next/navigation'
-import SidebarItem from './SidebarItem'
+import SidebarItem from './sidebarItem'
 
 const guestRoutes = [
     {
-        icon: FaLayerGroup,
+        icon: LayoutDashboard,
         label: 'Dashboard',
         href: '/'
     }, 

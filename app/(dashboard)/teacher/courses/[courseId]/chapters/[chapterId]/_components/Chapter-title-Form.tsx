@@ -1,28 +1,26 @@
 "use client"
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
-import {useState} from 'react';
-import Link from "next/link";
 import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useState } from 'react';
+import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
-  FormMessage,
+  FormMessage
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
 import { PencilIcon } from "lucide-react";
 import { MdClose } from "react-icons/md";
+import { toast } from "sonner";
+import { getError } from "@/lib/get-error-message";
 
-interface ChapterFormPops {
+interface ChapterTitleFormPops {
   initialData:{
     title: string
   },
@@ -34,11 +32,11 @@ const formSchema = z.object({
   title: z.string().min(1),
 });
 
-export const ChapterForm = ({
+export const ChapterTitleForm = ({
   initialData,
   courseId,
   chapterId
-}: ChapterFormPops) => {
+}: ChapterTitleFormPops) => {
   const [isEditing, setIsEditing] = useState(false)
   const router =  useRouter()
   const form = useForm<z.infer<typeof formSchema>>({
@@ -53,11 +51,11 @@ export const ChapterForm = ({
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}`, values);
-      toast.success("Course has updated!");
+      toast.success("Course updated");
       toggleEdit();
       router.refresh();
-    } catch {
-      toast.error("Something went wrong!");
+    } catch (error) {
+      toast.error(getError(error));
     }
   }
 
@@ -100,7 +98,7 @@ export const ChapterForm = ({
                        placeholder="c.g 'Intro to chapter'"
                        {...field} />
                    </FormControl>
-                   <FormMessage/>
+                   <FormMessage className="text-red-600"/>
                  </FormItem>
                }}
               />

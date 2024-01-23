@@ -5,15 +5,17 @@ import { useState } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
-  flexRender,
   SortingState,
-  getSortedRowModel,
-  getFilteredRowModel,
+  flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
+  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -22,22 +24,21 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import Link from "next/link";
+import { CreateCourse } from "./create-course";
+import { Plus } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  searchKey: string
+  searchKey: string;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
-  searchKey
+  searchKey,
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([])
+  const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const table = useReactTable({
@@ -51,13 +52,13 @@ export function DataTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
     state: {
       sorting,
-      columnFilters
+      columnFilters,
     },
   });
 
   return (
     <div>
-     <div className="flex items-center justify-between pb-4">
+      <div className="flex items-center justify-between pb-4">
         <Input
           placeholder="Search Courses"
           value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
@@ -66,9 +67,12 @@ export function DataTable<TData, TValue>({
           }
           className="md:max-w-lg w-64 focus-visible:ring-transparent"
         />
-        <Link href="/teacher/create-new-course">
-          <Button>Create New Course</Button>
-        </Link>
+        <CreateCourse>
+          <Button className="hidden lg:block">Create New Course</Button>
+          <Button className="lg:hidden flex items-center" size="icon">
+            <Plus className="h-5 w-5"/>
+          </Button>
+        </CreateCourse>
       </div>
       <div className="rounded-md border">
         <Table>

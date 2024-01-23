@@ -2,9 +2,9 @@
 import { Button } from "@/components/ui/button";
 import { useConfettiStore } from "@/hooks/use-confetti-store";
 import axios from "axios";
-import { Bookmark, CheckCircle, XCircle } from "lucide-react";
+import { CheckCircle, XCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 interface CourseProgressButtonProps {
@@ -66,9 +66,6 @@ export const CourseProgressButton = ({
         >
           {isCompleted ? "Not completed" : "Mark as copmleted"}
           <Icon className="h-4 w-4 ml-2" />
-        </Button>
-        <Button size="sm" variant="ghost" className="ml-2">
-          <Bookmark className="h-6 w-6" />
         </Button>
       </div>
     </>

@@ -1,4 +1,5 @@
-import { IconBadge } from "@/components/IconBadge";
+import Banner from "@/components/banner";
+import { IconBadge } from "@/components/icon-badge";
 import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs";
 import {
@@ -8,17 +9,20 @@ import {
   ListChecks,
 } from "lucide-react";
 import { redirect } from "next/navigation";
-import TitleForm from "./_components/TitleForm";
-import DescriptionForm from "./_components/description-form";
-import ImageForm from "./_components/ImageForm";
+import { AttachmentForm } from "./_components/attachment-form";
 import CategoryForm from "./_components/category-form";
-import { PriceForm } from "./_components/PriceForm";
-import { AttachmentForm } from "./_components/AttachmentForm";
 import { ChaptersForm } from "./_components/chapters-form";
-import Banner from "@/components/banner";
 import { CourseActions } from "./_components/course-actions";
+import DescriptionForm from "./_components/description-form";
+import ImageForm from "./_components/image-form";
+import { PriceForm } from "./_components/price-form";
+import TitleForm from "./_components/title-form";
 
-const CourseId = async ({ params }: { params: { courseId: string } }) => {
+const CourseId = async ({ 
+  params
+}: {
+  params: { courseId: string } 
+}) => {
   const { userId } = auth();
 
   if (!userId) {
@@ -76,6 +80,7 @@ const CourseId = async ({ params }: { params: { courseId: string } }) => {
         <Banner
           variant="warning"
           label="This course is unpublished. It will not be visible in the students"
+          className="text-black"
         />
       )}
 
@@ -83,6 +88,7 @@ const CourseId = async ({ params }: { params: { courseId: string } }) => {
         <Banner
           variant="success"
           label="This course is published. It will now be visible in the students"
+          className="text-secondary"
         />
       )}
 

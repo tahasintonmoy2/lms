@@ -3,7 +3,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import {useState} from 'react';
-import Link from "next/link";
 import axios from "axios";
 import * as z from "zod";
 
@@ -12,38 +11,38 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { PencilIcon } from "lucide-react";
-import { MdClose } from "react-icons/md";
+import {MdClose} from "react-icons/md"
+import { cn } from "@/lib/utils";
+import { Course } from "@prisma/client";
+import { Input } from "@/components/ui/input";
+import { formatPrice } from "@/lib/format";
+import { getError } from "@/lib/get-error-message";
 
-interface TitleFormPops {
-  initialData:{
-    title: string
-  },
+interface PriceFormPops {
+  initialData: Course,
   courseId: string
 }
 
 const formSchema = z.object({
-  title: z.string().min(1, {
-    message: "Title is required",
-  }),
+  price: z.coerce.number(),
 });
 
-const TitleForm = ({
+export const PriceForm = ({
   initialData,
   courseId,
-}: TitleFormPops) => {
+}: PriceFormPops) => {
   const [isEditing, setIsEditing] = useState(false)
   const router =  useRouter()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData,
+    defaultValues: {
+      price: initialData?.price || undefined,
+    },
   });
 
   const toggleEdit = () => setIsEditing((current)=> !current)
@@ -53,18 +52,18 @@ const TitleForm = ({
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.patch(`/api/courses/${courseId}`, values);
-      toast.success("Course Title has updated!");
+      toast.success("Course Price updated");
       toggleEdit();
       router.refresh();
-    } catch {
-      toast.error("Something went wrong!");
+    } catch (error) {
+      toast.error(getError(error));
     }
   }
 
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
-        Course Title
+        Course Price
         <Button variant="ghost" onClick={toggleEdit}>
         {isEditing ? (
             <>
@@ -74,13 +73,21 @@ const TitleForm = ({
           ) : (
             <>
               <PencilIcon className="h-4 w-4 mr-2" />
-              Edit title
+              Edit price
             </>
           )}
         </Button>
       </div>
       {!isEditing && (
-        <p className="mt-2">{initialData.title}</p>
+        <p className={cn(
+          "text-sm mt-2",
+          !initialData.price && "text-slate-400"
+        )}>
+          {initialData.price ? 
+            formatPrice(initialData.price)
+           :"No price set"
+          }
+        </p>
       )}
       {isEditing && (
         <Form {...form}>
@@ -88,16 +95,18 @@ const TitleForm = ({
              onSubmit={form.handleSubmit(onSubmit)}
              className="space-y-4 mt-4"
             >
-              <FormField
+              <FormField 
                control={form.control}
-               name="title"
+               name="price"
                render={({ field }) =>{
                 return <FormItem>
                    <FormControl>
                      <Input
+                       type="number"
+                       step={0}
                        disabled={isSubmitting}
                        className="focus-visible:ring-transparent focus:outline-none"
-                       placeholder="c.g 'Advanced iOS Development'"
+                       placeholder="Set price of your course..."
                        {...field} />
                    </FormControl>
                    <FormMessage/>
@@ -105,7 +114,7 @@ const TitleForm = ({
                }}
               />
               <div className="flex items-center gap-x-2">
-                  <Button 
+                  <Button
                   disabled={!isValid || isSubmitting}
                   type="submit">
                     Save
@@ -118,4 +127,3 @@ const TitleForm = ({
   )
 }
 
-export default TitleForm

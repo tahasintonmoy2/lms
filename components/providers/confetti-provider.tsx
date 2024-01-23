@@ -1,12 +1,11 @@
 "use client"
 
-import ReactConfetti  from "react-confetti";
+import ReactConfetti from "react-confetti";
 
-import React from 'react'
 import { useConfettiStore } from "@/hooks/use-confetti-store";
 
 export const ConfettiProvider = () => {
-    const confetti = useConfettiStore()
+    const confetti = useConfettiStore();
 
     if (!confetti.isOpen) return null;
 

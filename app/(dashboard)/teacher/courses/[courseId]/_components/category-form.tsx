@@ -20,6 +20,7 @@ import {MdClose} from "react-icons/md"
 import { cn } from "@/lib/utils";
 import { Course } from "@prisma/client";
 import { Combobox } from "@/components/ui/combobox";
+import { getError } from "@/lib/get-error-message";
 
 interface CategoryFormPops {
   initialData: Course,
@@ -52,11 +53,11 @@ const CategoryForm = ({
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.patch(`/api/courses/${courseId}`, values);
-      toast.success("Course has updated!");
+      toast.success("Course updated");
       toggleEdit();
       router.refresh();
-    } catch {
-      toast.error("Something went wrong!");
+    } catch (error) {
+      toast.error(getError(error));
     }
   }
 

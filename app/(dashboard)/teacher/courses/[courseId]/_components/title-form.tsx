@@ -6,45 +6,42 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { ActionHint } from "@/components/action-hint";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
-  FormItem
+  FormItem,
+  FormMessage,
 } from "@/components/ui/form";
-import { getError } from "@/lib/get-error-message";
-import { cn } from "@/lib/utils";
-import { Chapter } from "@prisma/client";
+import { Input } from "@/components/ui/input";
 import { PencilIcon } from "lucide-react";
 import { MdClose } from "react-icons/md";
 import { toast } from "sonner";
+import { getError } from "@/lib/get-error-message";
 
-interface ChapterAccessFormPops {
-  initialData: Chapter;
+interface TitleFormPops {
+  initialData: {
+    title: string;
+  };
   courseId: string;
-  chapterId: string;
 }
 
 const formSchema = z.object({
-  isFree: z.boolean().default(false),
+  title: z.string().min(1, {
+    message: "Title is required",
+  }),
 });
 
-const ChapterAccessForm = ({
-  initialData,
-  courseId,
-  chapterId,
-}: ChapterAccessFormPops) => {
+const TitleForm = ({ 
+  initialData, 
+  courseId 
+}: TitleFormPops) => {
   const [isEditing, setIsEditing] = useState(false);
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      isFree: !!initialData.isFree
-    },
+    defaultValues: initialData,
   });
 
   const toggleEdit = () => setIsEditing((current) => !current);
@@ -53,11 +50,8 @@ const ChapterAccessForm = ({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(
-        `/api/courses/${courseId}/chapters/${chapterId}`,
-        values
-      );
-      toast.success("Chapter has updated!");
+      await axios.patch(`/api/courses/${courseId}`, values);
+      toast.success("Course title updated!");
       toggleEdit();
       router.refresh();
     } catch (error) {
@@ -68,7 +62,7 @@ const ChapterAccessForm = ({
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
-        Chapter Access
+        Course Title
         <Button variant="ghost" onClick={toggleEdit}>
           {isEditing ? (
             <>
@@ -77,27 +71,13 @@ const ChapterAccessForm = ({
             </>
           ) : (
             <>
-            <ActionHint description="Edit access">
               <PencilIcon className="h-4 w-4 mr-2" />
-            </ActionHint>
+              Edit title
             </>
           )}
         </Button>
       </div>
-      {!isEditing && (
-        <p
-          className={cn(
-            "text-sm mt-2",
-            !initialData.isFree && "text-slate-400"
-          )}
-        >
-         {initialData.isFree ? (
-          <>This chapter is free for preview</>
-         ) : (
-          <>This chapter is paid</>
-         )}
-        </p>
-      )}
+      {!isEditing && <p className="mt-2">{initialData.title}</p>}
       {isEditing && (
         <Form {...form}>
           <form
@@ -106,21 +86,19 @@ const ChapterAccessForm = ({
           >
             <FormField
               control={form.control}
-              name="isFree"
+              name="title"
               render={({ field }) => {
                 return (
-                  <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                  <FormItem>
                     <FormControl>
-                        <Checkbox 
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
+                      <Input
+                        disabled={isSubmitting}
+                        className="focus-visible:ring-transparent focus:outline-none"
+                        placeholder="c.g 'Advanced iOS Development'"
+                        {...field}
+                      />
                     </FormControl>
-                    <div className="space-y-1 leading-none">
-                       <FormDescription>
-                        Check this box if you want to make this chapter free for preview?
-                       </FormDescription>
-                    </div>
+                    <FormMessage />
                   </FormItem>
                 );
               }}
@@ -137,4 +115,4 @@ const ChapterAccessForm = ({
   );
 };
 
-export default ChapterAccessForm;
+export default TitleForm;

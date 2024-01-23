@@ -1,31 +1,39 @@
 "use client";
-import React, { useState } from "react";
+import { AlertDialogModal } from "@/components/models/alert-dialog-modal";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { Copy, Edit, MoreVertical, Trash } from "lucide-react";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
-import axios from "axios";
-import { AlertDialogModal } from "@/components/models/alert-dialog-modal";
+import { getError } from "@/lib/get-error-message";
 import { Course } from "@prisma/client";
+import axios from "axios";
+import { Copy, Edit, MoreVertical, Trash } from "lucide-react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { toast } from "sonner";
 
 interface CellActionProps {
   data: Course;
   courseId: string;
 }
 
-const CellAction: React.FC<CellActionProps> = ({ data, courseId }) => {
+const CellAction: React.FC<CellActionProps> = ({
+ data,
+ courseId
+}) => {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+
+  const promise = () => new Promise((resolve) => setTimeout(resolve, 900));
+
+  const url = window.location.origin;
+
+  const baseUrl = `${url}/courses/${data.id}`;
 
   const onCopy = (id: string) => {
     navigator.clipboard.writeText(id),
@@ -36,10 +44,15 @@ const CellAction: React.FC<CellActionProps> = ({ data, courseId }) => {
     try {
       setIsLoading(true);
       await axios.delete(`/api/courses/${courseId}`);
-      toast.success("Course has deleted!");
+      toast.promise(promise, {
+        loading: "Please wait few minutes",
+        success: () => {
+          return "Course deleted";
+        },
+      });
       router.refresh();
     } catch (error) {
-      toast.error("Something went wrong!");
+      toast.error(getError(error));
     } finally {
       setIsLoading(false);
     }
@@ -48,6 +61,7 @@ const CellAction: React.FC<CellActionProps> = ({ data, courseId }) => {
   return (
     <>
       <AlertDialogModal
+        data={data}
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         onConfirm={onDelete}
@@ -64,7 +78,7 @@ const CellAction: React.FC<CellActionProps> = ({ data, courseId }) => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="rounded-xl">
-          <DropdownMenuItem onClick={() => onCopy(data.id)}>
+          <DropdownMenuItem onClick={() => onCopy(baseUrl)}>
             <Copy className="mr-2 h-4 w-4" />
             Copy Id
           </DropdownMenuItem>
