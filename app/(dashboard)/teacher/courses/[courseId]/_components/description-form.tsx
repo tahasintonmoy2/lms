@@ -79,9 +79,9 @@ const DescriptionForm = ({ initialData, courseId }: DescriptionFormPops) => {
         Course Description
         <div
           className={cn(
-            "ml-32 lg:ml-28",
+            "ml-32 lg:ml-[11.6rem]",
             !initialData.description && !isEditing && "ml-12 lg:ml-40",
-            initialData.description && isEditing && "ml-16 lg:ml-28",
+            initialData.description && isEditing && "ml-16 lg:ml-32",
             !initialData.description && isEditing && "ml-12 lg:ml-28"
           )}
         >

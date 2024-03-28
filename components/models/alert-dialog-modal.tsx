@@ -35,11 +35,6 @@ export const AlertDialogModal: React.FC<AlertDialogModalProps> = ({
   }
 
   return (
-    <ActionDialog
-      data={data}
-      isOpen={isOpen}
-      onClose={onClose}
-    >
       <div className="pt-6 space-x-2 flex items-center justify-end w-full">
         <AlertDialogCancel>Cancel</AlertDialogCancel>
         <AlertDialogAction
@@ -50,6 +45,5 @@ export const AlertDialogModal: React.FC<AlertDialogModalProps> = ({
           Continue
         </AlertDialogAction>
       </div>
-    </ActionDialog>
   );
 };

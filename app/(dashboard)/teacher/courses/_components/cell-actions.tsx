@@ -1,5 +1,5 @@
 "use client";
-import { AlertDialogModal } from "@/components/models/alert-dialog-modal";
+import { ActionDialog } from "@/components/action-dialog";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -26,12 +26,12 @@ const CellAction: React.FC<CellActionProps> = ({
 }) => {
   const router = useRouter();
 
-  const [isLoading, setIsLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
-  const promise = () => new Promise((resolve) => setTimeout(resolve, 900));
+  const promise = () => new Promise((resolve) => setTimeout(resolve, 600));
 
-  const url = window.location.origin;
+  const origin = typeof window !== "undefined" && window.location.origin ? window.location.origin : '';
+  const url = origin;
 
   const baseUrl = `${url}/courses/${data.id}`;
 
@@ -42,7 +42,6 @@ const CellAction: React.FC<CellActionProps> = ({
 
   const onDelete = async () => {
     try {
-      setIsLoading(true);
       await axios.delete(`/api/courses/${courseId}`);
       toast.promise(promise, {
         loading: "Please wait few minutes",
@@ -54,18 +53,17 @@ const CellAction: React.FC<CellActionProps> = ({
     } catch (error) {
       toast.error(getError(error));
     } finally {
-      setIsLoading(false);
+      setIsOpen(false);
     }
   };
 
   return (
     <>
-      <AlertDialogModal
+      <ActionDialog
         data={data}
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         onConfirm={onDelete}
-        loading={isLoading}
       />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>

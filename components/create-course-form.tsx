@@ -21,7 +21,7 @@ import { getError } from "@/lib/get-error-message";
 import { toast } from "sonner";
 
 const formSchema = z.object({
-  title: z.string().min(5, {
+  title: z.string().min(3, {
     message: "Name is required",
   }),
 });
@@ -30,11 +30,9 @@ type CreateCourseType = {
   onClick: React.ReactNode;
 };
 
-export const CreateNewCourseForm = ({ 
-  onClick 
-}: CreateCourseType) => {
+export const CreateNewCourseForm = ({ onClick }: CreateCourseType) => {
   const router = useRouter();
-  
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -58,10 +56,7 @@ export const CreateNewCourseForm = ({
     <div>
       <div>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className=""
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
               control={form.control}
               name="title"
