@@ -20,9 +20,9 @@ interface CellActionProps {
   courseId: string;
 }
 
-const CellAction: React.FC<CellActionProps> = ({
- data,
- courseId
+export const CellAction: React.FC<CellActionProps> = ({
+  data,
+  courseId
 }) => {
   const router = useRouter();
 
@@ -30,7 +30,10 @@ const CellAction: React.FC<CellActionProps> = ({
 
   const promise = () => new Promise((resolve) => setTimeout(resolve, 600));
 
-  const origin = typeof window !== "undefined" && window.location.origin ? window.location.origin : '';
+  const origin =
+    typeof window !== "undefined" && window.location.origin
+      ? window.location.origin
+      : "";
   const url = origin;
 
   const baseUrl = `${url}/courses/${data.id}`;
@@ -95,5 +98,3 @@ const CellAction: React.FC<CellActionProps> = ({
     </>
   );
 };
-
-export default CellAction;

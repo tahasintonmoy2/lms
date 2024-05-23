@@ -14,7 +14,7 @@ import {
   FormControl,
   FormDescription,
   FormField,
-  FormItem
+  FormItem,
 } from "@/components/ui/form";
 import { getError } from "@/lib/get-error-message";
 import { cn } from "@/lib/utils";
@@ -33,7 +33,7 @@ const formSchema = z.object({
   isFree: z.boolean().default(false),
 });
 
-const ChapterAccessForm = ({
+export const ChapterAccessForm = ({
   initialData,
   courseId,
   chapterId,
@@ -43,7 +43,7 @@ const ChapterAccessForm = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      isFree: !!initialData.isFree
+      isFree: !!initialData.isFree,
     },
   });
 
@@ -77,9 +77,9 @@ const ChapterAccessForm = ({
             </>
           ) : (
             <>
-            <ActionHint description="Edit access">
-              <PencilIcon className="h-4 w-4 mr-2" />
-            </ActionHint>
+              <ActionHint description="Edit access">
+                <PencilIcon className="h-4 w-4 mr-2" />
+              </ActionHint>
             </>
           )}
         </Button>
@@ -91,11 +91,11 @@ const ChapterAccessForm = ({
             !initialData.isFree && "text-slate-400"
           )}
         >
-         {initialData.isFree ? (
-          <>This chapter is free for preview</>
-         ) : (
-          <>This chapter is paid</>
-         )}
+          {initialData.isFree ? (
+            <>This chapter is free for preview</>
+          ) : (
+            <>This chapter is paid</>
+          )}
         </p>
       )}
       {isEditing && (
@@ -111,15 +111,16 @@ const ChapterAccessForm = ({
                 return (
                   <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
                     <FormControl>
-                        <Checkbox 
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
                     </FormControl>
                     <div className="space-y-1 leading-none">
-                       <FormDescription>
-                        Check this box if you want to make this chapter free for preview?
-                       </FormDescription>
+                      <FormDescription>
+                        Check this box if you want to make this chapter free for
+                        preview?
+                      </FormDescription>
                     </div>
                   </FormItem>
                 );
@@ -136,5 +137,3 @@ const ChapterAccessForm = ({
     </div>
   );
 };
-
-export default ChapterAccessForm;

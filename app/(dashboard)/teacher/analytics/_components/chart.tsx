@@ -1,16 +1,12 @@
 "use client";
 import { Card } from "@/components/ui/card";
-import React from "react";
 import {
-  BarChart,
   Bar,
-  Cell,
-  XAxis,
-  YAxis,
+  BarChart,
   ResponsiveContainer,
+  XAxis,
+  YAxis
 } from "recharts";
-import { AreaChart, Area, CartesianGrid } from 'recharts';
-
 
 interface ChartProps {
   data: {
@@ -24,7 +20,7 @@ export const Chart = ({ data }: ChartProps) => {
     <Card>
       <ResponsiveContainer width="100%" height={350}>
         <BarChart width={150} height={40} data={data}>
-           <XAxis 
+          <XAxis
             dataKey="name"
             stroke="#87534"
             fontSize={18}
@@ -37,11 +33,7 @@ export const Chart = ({ data }: ChartProps) => {
             tickLine={false}
             axisLine={false}
           />
-          <Bar 
-            dataKey="total"
-            fill="#2858ff"
-            radius={[4,4, 0, 0]}
-          />
+          <Bar dataKey="total" fill="#2858ff" radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </Card>

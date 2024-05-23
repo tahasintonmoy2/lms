@@ -33,14 +33,15 @@ export const CoursesList = ({
         ))}
       </div>
       {items.length === 0 && (
-        <div className="h-full flex flex-col items-center mt-10 justify-center space-y-4">
+        <div className="h-full flex flex-col items-center justify-center space-y-4">
           <Image
-            src="/empty_folder_illustration.svg"
-            height={240}
-            width={240}
+            src="/results-not-found.svg"
+            height={640}
+            width={640}
             alt=""
           />
-          <p>No courses found</p>
+          <h1 className="text-2xl font-bold text-center">No courses found</h1>
+          <p className="text-center">Try searching for something else</p>
         </div>
       )}
     </div>

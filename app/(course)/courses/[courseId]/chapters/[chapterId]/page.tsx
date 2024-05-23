@@ -1,16 +1,16 @@
 import { getChapter } from "@/actions/get-chapter";
 import Banner from "@/components/banner";
 import { Preview } from "@/components/preview";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { File } from "lucide-react";
 import { redirect } from "next/navigation";
+import { PiShareFat } from "react-icons/pi";
 import { CourseEnrollButton } from "./_components/course-enroll-button";
 import { CourseProgressButton } from "./_components/course-progress-button";
-import { VideoPlayer } from "./_components/video-player";
-import { Button } from "@/components/ui/button";
-import { PiShareFat } from "react-icons/pi";
 import { ShareDialog } from "./_components/share-dialog";
+import { VideoPlayer } from "./_components/video-player";
 
 const ChapterId = async ({
   params,
@@ -20,7 +20,7 @@ const ChapterId = async ({
   const { userId } = auth();
 
   if (!userId) {
-    return redirect("/");
+    return redirect("/auth/sign-in");
   }
 
   const {

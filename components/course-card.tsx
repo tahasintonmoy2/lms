@@ -25,7 +25,6 @@ export const CourseCard = ({
   progress,
   category,
 }: CourseCardProps) => {
-
   return (
     <Link href={`/courses/${id}`}>
       <div className="group hover:shadow-sm transition flex flex-col mt-4 overflow-hidden border rounded-lg p-3 h-full">
@@ -52,9 +51,9 @@ export const CourseCard = ({
               value={progress}
             />
           ) : (
-              <p className="text-lg md:text-sm font-medium">
-                {formatPrice(price)}
-              </p>
+            <p className="text-lg md:text-sm font-medium">
+              {formatPrice(price)}
+            </p>
           )}
         </div>
       </div>

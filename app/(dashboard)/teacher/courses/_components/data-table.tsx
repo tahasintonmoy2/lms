@@ -70,7 +70,7 @@ export function DataTable<TData, TValue>({
         <CreateCourse>
           <Button className="hidden lg:block">Create New Course</Button>
           <Button className="lg:hidden flex items-center" size="icon">
-            <Plus className="h-5 w-5"/>
+            <Plus className="h-5 w-5" />
           </Button>
         </CreateCourse>
       </div>

@@ -1,11 +1,13 @@
-"use client"
+"use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { useRouter } from "next/navigation";
-import {useState} from 'react';
 import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import { CourseCombobox } from "@/components/tw/combobox";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -13,32 +15,30 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import { toast } from "sonner";
-import { PencilIcon } from "lucide-react";
-import {MdClose} from "react-icons/md"
+import { getError } from "@/lib/get-error-message";
 import { cn } from "@/lib/utils";
 import { Course } from "@prisma/client";
-import { Combobox } from "@/components/ui/combobox";
-import { getError } from "@/lib/get-error-message";
+import { PencilIcon } from "lucide-react";
+import { MdClose } from "react-icons/md";
+import { toast } from "sonner";
 
 interface CategoryFormPops {
-  initialData: Course,
-  courseId: string,
-  options: {label: string, value:string}[]
+  initialData: Course;
+  courseId: string;
+  options: { label: string; value: string }[];
 }
 
 const formSchema = z.object({
   categoryId: z.string().min(1),
 });
 
-const CategoryForm = ({
+export const CategoryForm = ({
   initialData,
   courseId,
-  options
+  options,
 }: CategoryFormPops) => {
-  const [isEditing, setIsEditing] = useState(false)
-  const router =  useRouter()
+  const [isEditing, setIsEditing] = useState(false);
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -46,7 +46,7 @@ const CategoryForm = ({
     },
   });
 
-  const toggleEdit = () => setIsEditing((current)=> !current)
+  const toggleEdit = () => setIsEditing((current) => !current);
 
   const { isSubmitting, isValid } = form.formState;
 
@@ -59,19 +59,21 @@ const CategoryForm = ({
     } catch (error) {
       toast.error(getError(error));
     }
-  }
+  };
 
-  const selectedOption = options.find((option) => option.value === initialData.categoryId);
+  const selectedOption = options.find(
+    (option) => option.value === initialData.categoryId
+  );
 
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
         Course category
         <Button variant="ghost" onClick={toggleEdit}>
-        {isEditing ? (
+          {isEditing ? (
             <>
-            <MdClose className="h-5 w-5 mr-2"/>
-            Cancel
+              <MdClose className="h-5 w-5 mr-2" />
+              Cancel
             </>
           ) : (
             <>
@@ -82,46 +84,43 @@ const CategoryForm = ({
         </Button>
       </div>
       {!isEditing && (
-        <p className={cn(
-          "text-sm mt-2",
-          !initialData.categoryId && "text-slate-400"
-        )}>
+        <p
+          className={cn(
+            "text-sm mt-2",
+            !initialData.categoryId && "text-slate-400"
+          )}
+        >
           {selectedOption?.label || "No category"}
         </p>
       )}
       {isEditing && (
         <Form {...form}>
-            <form 
-             onSubmit={form.handleSubmit(onSubmit)}
-             className="space-y-4 mt-4"
-            >
-              <FormField 
-               control={form.control}
-               name="categoryId"
-               render={({ field }) =>{
-                return <FormItem>
-                   <FormControl>
-                      <Combobox 
-                        options={...options}
-                        {...field}
-                      />
-                   </FormControl>
-                   <FormMessage/>
-                 </FormItem>
-               }}
-              />
-              <div className="flex items-center gap-x-2">
-                  <Button
-                  disabled={!isValid || isSubmitting}
-                  type="submit">
-                    Save
-                  </Button>
-              </div>
-            </form>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-4 mt-4"
+          >
+            <FormField
+              control={form.control}
+              name="categoryId"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormControl>
+                      <CourseCombobox options={options} {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+            <div className="flex items-center gap-x-2">
+              <Button disabled={!isValid || isSubmitting} type="submit">
+                Save
+              </Button>
+            </div>
+          </form>
         </Form>
       )}
     </div>
-  )
-}
-
-export default CategoryForm
+  );
+};

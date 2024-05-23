@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+
 ::-webkit-scrollbar {
   width: 1.2rem;
 }
@@ -20,7 +24,6 @@
 ::-webkit-scrollbar-thumb:hover {
   background-color: #456dffd7;
 }
- 
 
 @layer base {
   :root {
@@ -68,11 +71,12 @@
     --ring: 224.3 76.3% 48%;
   }
 }
- 
+
 @layer base {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -82,4 +86,4 @@
   font-size: 15px !important;
 }
 
-@import "~@uploadthing/react/styles.css";
+/* @import "@uploadthing/react/styles.css"; */

@@ -53,7 +53,7 @@ const DescriptionForm = ({ initialData, courseId }: DescriptionFormPops) => {
   const expandHint = isExpand ? "Collapse" : "Expand";
 
   const { isSubmitting, isValid } = form.formState;
-  
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.patch(`/api/courses/${courseId}`, values);
@@ -68,7 +68,7 @@ const DescriptionForm = ({ initialData, courseId }: DescriptionFormPops) => {
   useEffect(() => {
     setIsMounted(true);
   }, []);
-  
+
   if (!isMounted) {
     return null;
   }
@@ -101,11 +101,15 @@ const DescriptionForm = ({ initialData, courseId }: DescriptionFormPops) => {
             ) : (
               <>
                 <PencilIcon className="h-4 w-4 mr-2" />
-                <p className={cn(
-                  "text-sm",
-                  !initialData.description && "block",
-                  initialData.description && "hidden md:block",
-                )}>Edit description</p>
+                <p
+                  className={cn(
+                    "text-sm",
+                    !initialData.description && "block",
+                    initialData.description && "hidden md:block"
+                  )}
+                >
+                  Edit description
+                </p>
               </>
             )}
           </button>

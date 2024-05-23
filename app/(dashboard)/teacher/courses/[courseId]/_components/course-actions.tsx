@@ -1,18 +1,18 @@
-"use client"
-import { ConfirmModal } from '@/components/models/confirm-modal'
-import { Button } from '@/components/ui/button'
-import { useConfettiStore } from '@/hooks/use-confetti-store'
-import { getError } from '@/lib/get-error-message'
-import axios from 'axios'
-import { Trash } from 'lucide-react'
-import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
-import { toast } from 'sonner'
+"use client";
+import { ConfirmModal } from "@/components/models/confirm-modal";
+import { Button } from "@/components/ui/button";
+import { useConfettiStore } from "@/hooks/use-confetti-store";
+import { getError } from "@/lib/get-error-message";
+import axios from "axios";
+import { Trash } from "lucide-react";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { toast } from "sonner";
 
 interface CourseActionsProps {
-  disabled: boolean,
-  isPublished:boolean,
-  courseId: string,
+  disabled: boolean;
+  isPublished: boolean;
+  courseId: string;
 }
 
 export const CourseActions = ({
@@ -20,13 +20,13 @@ export const CourseActions = ({
   isPublished,
   courseId,
 }: CourseActionsProps) => {
-  const router = useRouter()
+  const router = useRouter();
   const confetti = useConfettiStore();
   const [isLoadig, setIsLoading] = useState(false);
 
-  const onPublish =async () => {
+  const onPublish = async () => {
     try {
-      setIsLoading(true)
+      setIsLoading(true);
 
       if (isPublished) {
         await axios.patch(`/api/courses/${courseId}/unpublish`);
@@ -37,47 +37,43 @@ export const CourseActions = ({
         confetti.onOpen();
       }
 
-      router.refresh()
+      router.refresh();
     } catch (error) {
       toast.error(getError(error));
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
-  const onDelete =async () => {
+  const onDelete = async () => {
     try {
-      setIsLoading(true)
-      await axios.delete(`/api/courses/${courseId}`)
+      setIsLoading(true);
+      await axios.delete(`/api/courses/${courseId}`);
       toast.success("Course has deleted!");
-      router.push(`/teacher/courses`)
-      router.refresh()
+      router.push(`/teacher/courses`);
+      router.refresh();
     } catch (error) {
       toast.error(getError(error));
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
-    <div className='flex items-center gap-x-2'>
+    <div className="flex items-center gap-x-2">
       <Button
         onClick={onPublish}
         disabled={disabled || isLoadig}
-        variant='outline'
-        size='sm'
+        variant="outline"
+        size="sm"
       >
         {isPublished ? "Unpublish" : "Publish"}
       </Button>
       <ConfirmModal onConfirm={onDelete}>
-        <Button
-          disabled={isLoadig}
-          variant='destructive'
-          size='sm'
-        >
-          <Trash className='h-4 w-4'/>
+        <Button disabled={isLoadig} variant="destructive" size="sm">
+          <Trash className="h-4 w-4" />
         </Button>
-       </ConfirmModal>
+      </ConfirmModal>
     </div>
-  )
-}
+  );
+};

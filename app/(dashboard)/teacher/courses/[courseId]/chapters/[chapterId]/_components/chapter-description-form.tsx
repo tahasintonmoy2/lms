@@ -81,7 +81,7 @@ const ChapterDescriptionForm = ({
           ) : (
             <>
               <ActionHint description="Edit chapter description">
-               <PencilIcon className="h-4 w-4 mr-2" />
+                <PencilIcon className="h-4 w-4 mr-2" />
               </ActionHint>
             </>
           )}

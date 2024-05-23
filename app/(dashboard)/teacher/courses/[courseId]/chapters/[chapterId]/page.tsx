@@ -1,11 +1,11 @@
 import Banner from "@/components/banner";
 import { IconBadge } from "@/components/icon-badge";
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { ArrowLeft, Eye, LayoutDashboard, Video } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import ChapterAccessForm from "./_components/chapter-access-form";
+import { ChapterAccessForm } from "./_components/chapter-access-form";
 import ChapterAction from "./_components/chapter-actions";
 import ChapterDescriptionForm from "./_components/chapter-description-form";
 import { ChapterTitleForm } from "./_components/chapter-title-form";
@@ -19,7 +19,7 @@ const ChapterId = async ({
   const { userId } = auth();
 
   if (!userId) {
-    return redirect("/");
+    return redirect("/auth/sign-in");
   }
 
   const chapter = await db.chapter.findUnique({
@@ -36,11 +36,7 @@ const ChapterId = async ({
     return redirect("/");
   }
 
-  const requiredFields = [
-    chapter.title,
-    chapter.description,
-    chapter.videoUrl
-  ];
+  const requiredFields = [chapter.title, chapter.description, chapter.videoUrl];
 
   const totalFields = requiredFields.length;
   const completedFields = requiredFields.filter(Boolean).length;
@@ -52,21 +48,21 @@ const ChapterId = async ({
   return (
     <>
       {!chapter.isPublished && (
-        <Banner 
+        <Banner
           variant="warning"
           label="This chapter is unpublished. It will not be visible in the course"
           className="text-black"
         />
       )}
-      
+
       {chapter.isPublished && (
-        <Banner 
+        <Banner
           variant="success"
           label="This chapter is published. It will now be visible in the course"
           className="text-secondary"
         />
       )}
-      
+
       <div className="p-6">
         <div className="flex items-center justify-between">
           <div className="w-full">
@@ -76,17 +72,15 @@ const ChapterId = async ({
             >
               <ArrowLeft className="h-5 w-5 mr-2" />
               Back to course setup
-            </Link> 
+            </Link>
             <div className="flex items-center justify-between w-full">
               <div className="flex flex-col gap-y-2">
-                <h1 className="text-2xl font-medium">
-                  Chapter Creation
-                </h1>
+                <h1 className="text-2xl font-medium">Chapter Creation</h1>
                 <span className="text-base text-slate-600">
                   Complete all fields {completionText}
                 </span>
               </div>
-              <ChapterAction 
+              <ChapterAction
                 disabled={!isComplete}
                 courseId={params.courseId}
                 chapterId={params.chapterId}
@@ -99,10 +93,8 @@ const ChapterId = async ({
           <div className="space-y-4">
             <div>
               <div className="flex items-center gap-x-2">
-                <IconBadge icon={LayoutDashboard}/>
-                <p className="text-xl font-semibold">
-                  Customize your chapter
-                </p>
+                <IconBadge icon={LayoutDashboard} />
+                <p className="text-xl font-semibold">Customize your chapter</p>
               </div>
               <ChapterTitleForm
                 initialData={chapter}
@@ -117,13 +109,11 @@ const ChapterId = async ({
             </div>
             <div>
               <div className="flex items-center gap-x-2">
-                <IconBadge icon={Eye}/>
-                <p className="text-xl font-semibold">
-                  Access Settings
-                </p>
+                <IconBadge icon={Eye} />
+                <p className="text-xl font-semibold">Access Settings</p>
               </div>
             </div>
-            <ChapterAccessForm 
+            <ChapterAccessForm
               initialData={chapter}
               courseId={params.courseId}
               chapterId={params.chapterId}
@@ -131,12 +121,10 @@ const ChapterId = async ({
           </div>
           <div>
             <div className="flex items-center gap-x-2">
-              <IconBadge icon={Video}/>
-              <p className="text-xl font-semibold">
-                Add an Video
-              </p>
+              <IconBadge icon={Video} />
+              <p className="text-xl font-semibold">Add an Video</p>
             </div>
-            <ChapterVideoForm 
+            <ChapterVideoForm
               initialData={chapter}
               chapterId={params.chapterId}
               courseId={params.courseId}

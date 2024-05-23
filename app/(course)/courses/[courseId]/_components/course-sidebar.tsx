@@ -1,58 +1,52 @@
-
-import { db } from '@/lib/db';
-import { auth } from '@clerk/nextjs';
-import { Chapter, Course, UserProgress } from '@prisma/client'
-import { redirect } from 'next/navigation';
-import React from 'react'
-import { CourseSidebarItem } from './course-sidebar-item';
-import { CourseProgress } from '@/components/course-progress';
+import { db } from "@/lib/db";
+import { auth } from "@clerk/nextjs/server";
+import { Chapter, Course, UserProgress } from "@prisma/client";
+import { redirect } from "next/navigation";
+import React from "react";
+import { CourseSidebarItem } from "./course-sidebar-item";
+import { CourseProgress } from "@/components/course-progress";
 
 interface CourseSidebarProps {
   course: Course & {
     chapters: (Chapter & {
       userProgress: UserProgress[] | null;
-    })[]
+    })[];
   };
-  progressCount: number
+  progressCount: number;
 }
 
-export const CourseSidebar = async({
+export const CourseSidebar = async ({
   course,
-  progressCount
-}:CourseSidebarProps) => {
-  const { userId } = auth()
+  progressCount,
+}: CourseSidebarProps) => {
+  const { userId } = auth();
 
   if (!userId) {
-    return redirect("/")
+    return redirect("/auth/sign-in");
   }
 
   const purchase = await db.purchase.findUnique({
-    where:{
+    where: {
       userId_courseId: {
         userId,
         courseId: course.id,
-      }
-    }
+      },
+    },
   });
 
   return (
-    <div className='h-full border-r flex flex-col overflow-y-auto bg-white shadow-sm'>
-      <div className='p-8 flex flex-col border-b'>
-        <h1 className='font-semibold'>
-          {course.title}
-        </h1>
+    <div className="h-full border-r flex flex-col overflow-y-auto bg-white shadow-sm">
+      <div className="p-8 flex flex-col border-b">
+        <h1 className="font-semibold">{course.title}</h1>
         {purchase && (
-          <div className='mt-10'>
-            <CourseProgress 
-              variant="success"
-              value={progressCount}
-            />
+          <div className="mt-10">
+            <CourseProgress variant="success" value={progressCount} />
           </div>
         )}
       </div>
-      <div className='flex flex-col w-full'>
+      <div className="flex flex-col w-full">
         {course.chapters.map((chapter) => (
-          <CourseSidebarItem 
+          <CourseSidebarItem
             key={chapter.id}
             id={chapter.id}
             label={chapter.title}
@@ -63,5 +57,5 @@ export const CourseSidebar = async({
         ))}
       </div>
     </div>
-  )
-}
+  );
+};

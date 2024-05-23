@@ -1,11 +1,11 @@
 "use client";
 
 import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { useParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -30,7 +30,7 @@ export const ShareDialog = ({
     window.navigator.clipboard.writeText(baseUrl);
     setIsCopy(true);
 
-    toast("Course link copy to clipboard");
+    toast.info("Course link copy to clipboard");
 
     setTimeout(() => {
       setIsCopy(false);

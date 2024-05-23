@@ -25,9 +25,9 @@ const formSchema = z.object({
   }),
 });
 
-const ImageForm = ({ 
-  initialData, 
-  courseId 
+export const ImageForm = ({
+  initialData,
+  courseId
 }: ImageFormPops) => {
   const [isEditing, setIsEditing] = useState(false);
   const router = useRouter();
@@ -103,5 +103,3 @@ const ImageForm = ({
     </div>
   );
 };
-
-export default ImageForm;

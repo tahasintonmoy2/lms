@@ -1,7 +1,7 @@
 import Banner from "@/components/banner";
 import { IconBadge } from "@/components/icon-badge";
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import {
   CircleDollarSign,
   File,
@@ -10,23 +10,23 @@ import {
 } from "lucide-react";
 import { redirect } from "next/navigation";
 import { AttachmentForm } from "./_components/attachment-form";
-import CategoryForm from "./_components/category-form";
+import { CategoryForm } from "./_components/category-form";
 import { ChaptersForm } from "./_components/chapters-form";
 import { CourseActions } from "./_components/course-actions";
 import DescriptionForm from "./_components/description-form";
-import ImageForm from "./_components/image-form";
+import { ImageForm } from "./_components/image-form";
 import { PriceForm } from "./_components/price-form";
-import TitleForm from "./_components/title-form";
+import { TitleForm } from "./_components/title-form";
 
-const CourseId = async ({ 
+const CourseId = async ({
   params
 }: {
-  params: { courseId: string } 
+  params: { courseId: string }
 }) => {
   const { userId } = auth();
 
   if (!userId) {
-    return redirect("/");
+    return redirect("/auth/sign-in");
   }
 
   const course = await db.course.findUnique({
@@ -112,18 +112,9 @@ const CourseId = async ({
               <IconBadge icon={LayoutDashboard} />
               <h2 className="text-xl font-semibold">Customize your course</h2>
             </div>
-            <TitleForm 
-             initialData={course} 
-             courseId={course.id} 
-            />
-            <DescriptionForm 
-             initialData={course} 
-             courseId={course.id} 
-            />
-            <ImageForm 
-             initialData={course} 
-             courseId={course.id} 
-            />
+            <TitleForm initialData={course} courseId={course.id} />
+            <DescriptionForm initialData={course} courseId={course.id} />
+            <ImageForm initialData={course} courseId={course.id} />
             <CategoryForm
               initialData={course}
               courseId={course.id}
@@ -139,10 +130,7 @@ const CourseId = async ({
                 <IconBadge icon={ListChecks} />
                 <h2 className="text-xl font-semibold">Course Chapters</h2>
               </div>
-              <ChaptersForm 
-               initialData={course} 
-               courseId={course.id} 
-              />
+              <ChaptersForm initialData={course} courseId={course.id} />
             </div>
             <div>
               <div className="flex items-center gap-x-2">
@@ -151,20 +139,14 @@ const CourseId = async ({
                   Set your price of course
                 </p>
               </div>
-              <PriceForm 
-               initialData={course} 
-               courseId={course.id} 
-              />
+              <PriceForm initialData={course} courseId={course.id} />
             </div>
             <div>
               <div className="flex items-center gap-x-2">
                 <IconBadge icon={File} />
                 <p className="text-xl font-semibold">Resources & Attachments</p>
               </div>
-              <AttachmentForm 
-               initialData={course} 
-               courseId={course.id} 
-              />
+              <AttachmentForm initialData={course} courseId={course.id} />
             </div>
           </div>
         </div>

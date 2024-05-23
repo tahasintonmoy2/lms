@@ -1,29 +1,28 @@
-import React from "react";
-import { auth } from "@clerk/nextjs";
-import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
-import { DataTable } from "./_components/data-table";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 import { columns } from "./_components/columns";
+import { DataTable } from "./_components/data-table";
 
-const page = async() => {
-  const { userId } = auth()
+const page = async () => {
+  const { userId } = auth();
 
   if (!userId) {
-    return redirect('/')
+    return redirect("/auth/sign-in");
   }
 
   const courses = await db.course.findMany({
-    where:{
-      userId
+    where: {
+      userId,
     },
-    orderBy:{
-      createdAt:'desc'
-    }
-  })
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
 
   return (
     <div className="p-6">
-        <DataTable columns={columns} data={courses} searchKey="title"/>
+      <DataTable columns={columns} data={courses} searchKey="title" />
     </div>
   );
 };

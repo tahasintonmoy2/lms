@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { Course } from "@prisma/client";
 import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
-import CellAction from "./cell-actions";
+import { CellAction } from "./cell-actions";
 
 export type Payment = {
   id: string;

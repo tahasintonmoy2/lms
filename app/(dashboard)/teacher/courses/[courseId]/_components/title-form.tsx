@@ -33,7 +33,7 @@ const formSchema = z.object({
   }),
 });
 
-const TitleForm = ({ 
+export const TitleForm = ({ 
   initialData, 
   courseId 
 }: TitleFormPops) => {
@@ -114,5 +114,3 @@ const TitleForm = ({
     </div>
   );
 };
-
-export default TitleForm;

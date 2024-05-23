@@ -1,10 +1,10 @@
 import { IconBadge } from "@/components/icon-badge";
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 import { formatPrice } from "@/lib/format";
 import { LucideIcon } from "lucide-react";
@@ -16,22 +16,18 @@ interface DataCardProps {
   shouldFormat?: boolean;
 }
 
-export const DataCard = ({ 
-  value, 
-  label, 
+export const DataCard = ({
+  value,
+  label,
   icon: Icon,
-  shouldFormat 
+  shouldFormat,
 }: DataCardProps) => {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle>
-            {label}
-        </CardTitle>
+        <CardTitle>{label}</CardTitle>
         <CardDescription>
-            <IconBadge
-              icon={Icon}
-            />
+          <IconBadge icon={Icon} />
         </CardDescription>
       </CardHeader>
       <CardContent>

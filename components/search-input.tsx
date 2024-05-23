@@ -1,60 +1,60 @@
 "use client";
 
-import qs from "query-string";
 import { Search, XIcon } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
+import qs from "query-string";
+import { useState } from "react";
 
-import { Input } from "@/components/ui/input";
 import { useDebounce } from "@/hooks/use-debounce";
-import { Button } from "@/components/ui/button";
 
 export const SearchInput = () => {
   const [value, setValue] = useState("");
   const debouncedValue = useDebounce(value);
 
-  const searchParams = useSearchParams();
   const router = useRouter();
-  const pathname = usePathname();
 
-  const currentCategoryId = searchParams.get("categoryId");
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-  useEffect(() => {
+    if (!value) return;
+
     const url = qs.stringifyUrl(
       {
-        url: pathname,
-        query: {
-          categoryId: currentCategoryId,
-          title: debouncedValue,
-        },
+        url: "/search",
+        query: { title: debouncedValue },
       },
-      { skipEmptyString: true, skipNull: true }
+      { skipEmptyString: true }
     );
 
     router.push(url);
-  }, [debouncedValue, currentCategoryId, router, pathname]);
+  };
 
   return (
-    <div className="relative">
-      <Search className="h-4 w-4 absolute top-3 left-3 text-slate-600" />
-      {value.length === 0 ? (
-        <Search className="h-4 w-4 absolute hidden top-3 left-3 text-slate-600" />
-      ) : (
-        <Button
-          variant="ghost"
-          size="sm"
+    <form
+      onSubmit={onSubmit}
+      className=" relative w-full lg:w-[400px] flex items-center"
+    >
+      <input
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder="Search"
+        className="rounded-r-none rounded-l-full py-2 pl-4 border outline-none dark:bg-[#0f111a] focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 dark:border-slate-700 border-r-0 lg:w-[600px]"
+      />
+      {value && (
+        <button
+          type="button"
           onClick={() => setValue("")}
-          className="absolute top-1 md:ml-64 ml-[18.6rem] flex items-center text-slate-600"
+          className="text-muted-foreground absolute top-2.5 right-14 cursor-pointer hover:opacity-75 transition"
         >
           <XIcon className="h-5 w-5 gap-y-3" />
-        </Button>
+        </button>
       )}
-      <Input
-        onChange={(e) => setValue(e.target.value)}
-        value={value}
-        className="w-full md:w-[300px] pl-9 rounded-full bg-slate-100 focus-visible:ring-slate-200"
-        placeholder="Search for a course"
-      />
-    </div>
+      <button
+        type="submit"
+        className="rounded-l-none rounded-r-full px-3 pb-3 pt-[0.6rem] text-white bg-blue-600"
+      >
+        <Search className="h-5 w-5" />
+      </button>
+    </form>
   );
 };

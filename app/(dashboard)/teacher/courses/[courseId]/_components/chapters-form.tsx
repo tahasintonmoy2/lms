@@ -32,10 +32,7 @@ const formSchema = z.object({
   title: z.string().min(1),
 });
 
-export const ChaptersForm = ({ 
-  initialData,
-  courseId
-}: ChaptersFormPops) => {
+export const ChaptersForm = ({ initialData, courseId }: ChaptersFormPops) => {
   const [isCreating, setIsCreating] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const router = useRouter();
@@ -130,10 +127,7 @@ export const ChaptersForm = ({
                 );
               }}
             />
-            <Button 
-              disabled={!isValid || isSubmitting} 
-              type="submit"
-            >
+            <Button disabled={!isValid || isSubmitting} type="submit">
               Create
             </Button>
           </form>

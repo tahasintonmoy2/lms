@@ -1,9 +1,10 @@
-import "./globals.css";
+import { ConfettiProvider } from "@/components/providers/confetti-provider";
+import { ClerkProvider } from "@clerk/nextjs";
+import "@uploadthing/react/styles.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { ClerkProvider } from "@clerk/nextjs";
-import ToasterProvider from "@/components/providers/toasterProvider";
-import { ConfettiProvider } from "@/components/providers/confetti-provider";
+import { Toaster } from "sonner";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,9 +23,9 @@ export default function RootLayout({
       <html lang="en">
         <body className={inter.className}>
           <ConfettiProvider />
-          <ToasterProvider/>
+          <Toaster position="top-center" richColors />
           {children}
-          </body>
+        </body>
       </html>
     </ClerkProvider>
   );
