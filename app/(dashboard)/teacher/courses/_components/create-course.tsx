@@ -2,17 +2,17 @@
 
 import {
   Dialog,
+  DialogClose,
   DialogContent,
-  DialogHeader,
   DialogDescription,
+  DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogClose,
 } from "@/components/ui/dialog";
 
-import React, { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
 import { CreateNewCourseForm } from "@/components/create-course-form";
+import { Button } from "@/components/ui/button";
+import React, { useEffect, useState } from "react";
 
 type CreateCourseType = {
   children: React.ReactNode;

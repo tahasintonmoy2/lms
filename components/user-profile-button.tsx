@@ -1,4 +1,5 @@
 "use client";
+
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -10,10 +11,10 @@ import {
 import { CreditCard, LogOut, User2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 
+import { Button } from "@/components/ui/button";
 import { SignOutButton, useClerk, useUser } from "@clerk/nextjs";
 import { useTheme } from "next-themes";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
 
 export const UserProfileButton = () => {
   const { user } = useUser();
@@ -25,7 +26,7 @@ export const UserProfileButton = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className="flex items-center text-sm pl-12 pr-4 md:pr-2 md:pl-2">
+        <div className="flex items-center text-sm md:pr-2 px-4">
           <div className="gap-x-2 flex items-center max-w-[150px]">
             <Avatar className="h-7 w-7 cursor-pointer">
               <AvatarImage src={user?.imageUrl} />
@@ -40,7 +41,7 @@ export const UserProfileButton = () => {
         forceMount
       >
         <div className="flex flex-col space-y-2 p-2">
-          <p className="text-base font-medium leading-none text-muted-foreground">
+          <p className="text-base font-medium leading-none">
             {user?.fullName}
           </p>
           <p className="text-xs font-medium leading-none text-muted-foreground">

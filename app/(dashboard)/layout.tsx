@@ -1,10 +1,10 @@
+import { getCourses } from "@/actions/get-courses";
+import CommandBar from "@/components/command-bar";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 import { ReactNode } from "react";
 import Navbar from "./_components/navbar";
 import { Sidebar } from "./_components/sidebar";
-import { auth } from "@clerk/nextjs/server";
-import { getCourses } from "@/actions/get-courses";
-import { redirect } from "next/navigation";
-import CommandBar from "@/components/command-bar";
 
 const layout = async ({
   children,
@@ -29,7 +29,7 @@ const layout = async ({
       <div className="h-[80px] md:pl-56 fixed inset-y-0 w-full z-50">
         <Navbar />
       </div>
-      <div className="hidden md:flex h-full w-56 flex-col fixed inset-y-0 z-10">
+      <div className="h-full w-56 flex-col fixed inset-y-0 z-10">
         <Sidebar />
       </div>
       <CommandBar items={courses} />

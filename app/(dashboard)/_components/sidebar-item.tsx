@@ -20,14 +20,10 @@ const SidebarItem = ({ icon: Icon, label, href }: SidebarItemProps) => {
     pathname === href ||
     pathname?.startsWith(`${href}/`);
 
-  const onClick = () => {
-    router.push(href);
-  };
 
   return (
-    <button
-      onClick={onClick}
-      type="button"
+    <a
+        href={href}
       className={cn(
         "flex items-center gap-x-2 text-slate-600 text-sm font-[500] pl-6 transition-all hover:text-slate-600 hover:bg-slate-400/25",
         isActive &&
@@ -47,7 +43,7 @@ const SidebarItem = ({ icon: Icon, label, href }: SidebarItemProps) => {
           isActive && "opacity-100"
         )}
       />
-    </button>
+    </a>
   );
 };
 

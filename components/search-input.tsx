@@ -13,6 +13,10 @@ export const SearchInput = () => {
 
   const router = useRouter();
 
+  const onRedirect = (courseId: string) => {
+    window.location.href = `${courseId}`;
+  }
+
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -26,7 +30,7 @@ export const SearchInput = () => {
       { skipEmptyString: true }
     );
 
-    router.push(url);
+    onRedirect(url);
   };
 
   return (

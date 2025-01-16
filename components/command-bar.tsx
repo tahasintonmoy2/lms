@@ -30,6 +30,10 @@ const CommandBar: React.FC<CommandBarProps> = ({ items }) => {
 
   const router = useRouter();
 
+  const onRedirect = (courseId: string) => {
+    window.location.href = `/courses/${courseId}`;
+  }
+
   const filterProducts = query
     ? items.filter((item) =>
         item.title.toLowerCase().includes(query.toLowerCase())
@@ -82,7 +86,7 @@ const CommandBar: React.FC<CommandBarProps> = ({ items }) => {
             onChange={(item) => {
               {
                 filterProducts.map((item) =>
-                  router.push(`/courses/${item.id}`)
+                    onRedirect(item.id)
                 );
               }
             }}

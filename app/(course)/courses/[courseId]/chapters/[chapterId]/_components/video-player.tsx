@@ -85,6 +85,7 @@ export const VideoPlayer = ({
           className={cn("aspect-video", !isReady && "hidden")}
           onCanPlay={() => setIsReady(true)}
           onEnded={onEnd}
+          autoPlay
           muted
           playbackId={playbackId}
         />

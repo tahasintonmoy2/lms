@@ -86,4 +86,8 @@ html {
   font-size: 15px !important;
 }
 
+.navbar-width {
+  width: -webkit-fill-available;
+}
+
 /* @import "@uploadthing/react/styles.css"; */

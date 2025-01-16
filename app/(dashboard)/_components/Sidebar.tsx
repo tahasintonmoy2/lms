@@ -1,10 +1,16 @@
+"use client";
+
+import { Icon } from "@/app/(dashboard)/_components/icon";
 import { PremiumCard } from "@/components/premium-card";
-import { Icon } from "./icon";
+import { cn } from "@/lib/utils";
+import { useMediaQuery } from "usehooks-ts";
 import { SidebarRoutes } from "./sidebar-routes";
 
 export const Sidebar = () => {
+  const isDesktop = useMediaQuery("(min-width: 1080px)");
+
   return (
-    <div className="h-full">
+    <div className={cn("h-full bg-blue-600", isDesktop ? "block" : "hidden")}>
       <div className="h-full border-r flex flex-col bg-white overflow-y-auto shadow-sm">
         <div className="p-6 flex items-center">
           <Icon />
@@ -14,8 +20,8 @@ export const Sidebar = () => {
           <SidebarRoutes />
         </div>
         <div className="pb-3 mt-auto flex items-center flex-col gap-y-4">
-        <PremiumCard />
-      </div>
+          <PremiumCard />
+        </div>
       </div>
     </div>
   );
